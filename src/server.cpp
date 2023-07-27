@@ -35,8 +35,16 @@ Handler* find_handler(const std::string& target) {
     static auto* defaultHandler = new DefaultHandler();
     return defaultHandler;
 }
+void getTimeStamp()
+{
+    auto now = std::chrono::system_clock::now();
+    std::time_t end_time = std::chrono::system_clock::to_time_t(now);
+
+    std::cout << "Current Time and Date: " << std::ctime(&end_time) << std::endl;
+}
 
 void process_request(tcp::socket& socket) {
+    getTimeStamp();
     beast::flat_buffer buffer;
 
     HTTPRequest req;
@@ -48,7 +56,7 @@ void process_request(tcp::socket& socket) {
         return;
     }
     std::string target = std::string(req.target());
-    std::cout << req.base() << std::endl;
+    std::cout << "request\n" << req << std::endl;
     HTTPResponse res;
 
     auto handler = find_handler(target);
@@ -58,7 +66,7 @@ void process_request(tcp::socket& socket) {
     } else {
         res.result(http::status::not_found);
     }
-
+    std::cout << "response\n" << res << std::endl;
     http::write(socket, res);
 }
 
