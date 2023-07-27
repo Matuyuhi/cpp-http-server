@@ -12,17 +12,18 @@
 #include "../../aliases/http_aliases.h"
 
 namespace http = boost::beast::http;
+
 class Handler {
 protected:
     std::string rootPath;
 public:
-    explicit Handler(std::string  rootPath): rootPath(std::move(rootPath)) {}
-    virtual ~Handler() = default;
-    virtual HTTPResponse handle_request(const HTTPRequest& req, std::string path) = 0;
+    explicit Handler(std::string rootPath) : rootPath(std::move(rootPath)) {}
 
-    std::pair<std::string, Handler*> get_path() {
-        return {rootPath, this};
-    }
+    virtual ~Handler() = default;
+
+    virtual HTTPResponse handle_request(const HTTPRequest &req, std::string path) = 0;
+
+    std::pair<std::string, Handler *> get_path();
 
 };
 

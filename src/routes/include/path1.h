@@ -10,8 +10,9 @@
 
 class Path1Handler : public Handler {
 public:
-    Path1Handler(): Handler("/path1") {}
-    HTTPResponse handle_request(const HTTPRequest& req, std::string path) override;
+    Path1Handler() : Handler("/path1") {}
+
+    HTTPResponse handle_request(const HTTPRequest &req, std::string path) override;
 };
 
 #endif //CPP_HTTP_SERVER_PATH1_H

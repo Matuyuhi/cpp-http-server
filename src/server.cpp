@@ -19,38 +19,38 @@ using tcp = boost::asio::ip::tcp;
 std::vector<std::pair<std::string, std::unique_ptr<Handler>>> path_to_handler;
 
 void initialize_handlers() {
-    auto* path1 = new Path1Handler();
-    auto* path2 = new Path2Handler();
+    auto *path1 = new Path1Handler();
+    auto *path2 = new Path2Handler();
     path_to_handler.emplace_back(path1->get_path());
     path_to_handler.emplace_back(path2->get_path());
     // Add more paths and handlers as needed.
 }
 
-Handler* find_handler(const std::string& target) {
-    for (auto& pair : path_to_handler) {
+Handler *find_handler(const std::string &target) {
+    for (auto &pair: path_to_handler) {
         if (target.find(pair.first) == 0) { // if target starts with pair.first
             return pair.second.get();
         }
     }
-    static auto* defaultHandler = new DefaultHandler();
+    static auto *defaultHandler = new DefaultHandler();
     return defaultHandler;
 }
-void getTimeStamp()
-{
+
+void getTimeStamp() {
     auto now = std::chrono::system_clock::now();
     std::time_t end_time = std::chrono::system_clock::to_time_t(now);
 
     std::cout << "Current Time and Date: " << std::ctime(&end_time) << std::endl;
 }
 
-void process_request(tcp::socket& socket) {
+void process_request(tcp::socket &socket) {
     getTimeStamp();
     beast::flat_buffer buffer;
 
     HTTPRequest req;
     try {
         http::read(socket, buffer, req);
-    } catch(boost::system::system_error& e) {
+    } catch (boost::system::system_error &e) {
         // Handle error. For now, we just print it and return.
         std::cerr << "Error reading request: " << e.what() << std::endl;
         return;

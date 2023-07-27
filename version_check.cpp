@@ -4,8 +4,7 @@
 #include <iostream>
 #include <boost/version.hpp>
 
-int main()
-{
+int main() {
     std::cout << "Ver." << BOOST_VERSION << '\n' <<
               "Lib Ver." << BOOST_LIB_VERSION << std::endl;
 

@@ -9,7 +9,9 @@
 
 class Path2Handler : public Handler {
 public:
-    Path2Handler(): Handler("/path2") {}
-    HTTPResponse handle_request(const HTTPRequest& req, std::string path) override;
+    Path2Handler() : Handler("/path2") {}
+
+    HTTPResponse handle_request(const HTTPRequest &req, std::string path) override;
 };
+
 #endif //CPP_HTTP_SERVER_PATH2_H

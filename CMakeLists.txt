@@ -22,9 +22,7 @@ file(GLOB SERVER_HEADERS
         ${PROJECT_SOURCE_DIR}/src/aliases/*.h
 )
 
-add_executable(cpp_http_server ${SERVER_SOURCES} ${SERVER_HEADERS}
-        src/routes/src/default.cpp
-        src/routes/include/default.h)
+add_executable(cpp_http_server ${SERVER_SOURCES} ${SERVER_HEADERS})
 
 add_executable(version_check version_check.cpp)
 

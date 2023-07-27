@@ -3,7 +3,7 @@
 //
 #include "../include/default.h"
 
-HTTPResponse DefaultHandler::handle_request(const HTTPRequest& req, std::string path) {
+HTTPResponse DefaultHandler::handle_request(const HTTPRequest &req, std::string path) {
     HTTPResponse res;
     res.result(http::status::not_found);
     return res;

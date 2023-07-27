@@ -4,12 +4,15 @@
 
 #ifndef CPP_HTTP_SERVER_DEFAULT_H
 #define CPP_HTTP_SERVER_DEFAULT_H
+
 #include "handler.h"
 
 
 class DefaultHandler : public Handler {
 public:
-    DefaultHandler(): Handler("") {}
-    HTTPResponse handle_request(const HTTPRequest& re, std::string path) override;
+    DefaultHandler() : Handler("") {}
+
+    HTTPResponse handle_request(const HTTPRequest &re, std::string path) override;
 };
+
 #endif //CPP_HTTP_SERVER_DEFAULT_H
