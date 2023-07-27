@@ -3,7 +3,7 @@
 //
 #include "../include/path2.h"
 
-HTTPResponse Path2Handler::handle_request(const HTTPRequest& req) {
+HTTPResponse Path2Handler::handle_request(const HTTPRequest& req, std::string path) {
     HTTPResponse res;
     res.result(http::status::ok);
     res.body() = R"({"response": "This is path 2"})";

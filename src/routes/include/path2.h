@@ -6,10 +6,10 @@
 #define CPP_HTTP_SERVER_PATH2_H
 
 #include "handler.h"
-namespace http = boost::beast::http;
 
 class Path2Handler : public Handler {
 public:
-    HTTPResponse handle_request(const HTTPRequest& req) override;
+    Path2Handler(): Handler("/path2") {}
+    HTTPResponse handle_request(const HTTPRequest& req, std::string path) override;
 };
 #endif //CPP_HTTP_SERVER_PATH2_H

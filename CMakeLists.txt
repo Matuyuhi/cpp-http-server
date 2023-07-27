@@ -9,18 +9,22 @@ list(APPEND CMAKE_PREFIX_PATH "/opt/homebrew/lib/cmake")
 # Boostライブラリを見つける
 find_package(Boost 1.82.0 COMPONENTS system thread REQUIRED)
 
+# source
 file(GLOB SERVER_SOURCES
         ${PROJECT_SOURCE_DIR}/src/server.cpp
         ${PROJECT_SOURCE_DIR}/src/routes/src/*.cpp
 )
 
+# header
 file(GLOB SERVER_HEADERS
         ${PROJECT_SOURCE_DIR}/src/routes/include/*.h
         ${PROJECT_SOURCE_DIR}/src/config/*.h
+        ${PROJECT_SOURCE_DIR}/src/aliases/*.h
 )
 
 add_executable(cpp_http_server ${SERVER_SOURCES} ${SERVER_HEADERS}
-        src/aliases/http_aliases.h)
+        src/routes/src/default.cpp
+        src/routes/include/default.h)
 
 add_executable(version_check version_check.cpp)
 
