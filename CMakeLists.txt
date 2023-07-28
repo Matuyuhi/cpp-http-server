@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.26)
+cmake_minimum_required(VERSION 3.22)
 project(cpp_http_server)
 
 set(CMAKE_CXX_STANDARD 20)
@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD 20)
 list(APPEND CMAKE_PREFIX_PATH "/opt/homebrew/lib/cmake")
 
 # Boostライブラリを見つける
-find_package(Boost 1.82.0 COMPONENTS system thread REQUIRED)
+find_package(Boost 1.74.0 COMPONENTS system thread REQUIRED)
 
 # source
 file(GLOB SERVER_SOURCES

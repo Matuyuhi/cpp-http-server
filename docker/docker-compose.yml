@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  cpp_http_server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '8080:8080'
+    expose:
+      - 8080
+    tty: true
+    volumes:
+      - ..:/usr/src/myapp
+    working_dir: /usr/src/myapp
+    command: bash -c "rm -rf build && mkdir -p build && cd build && cmake .. && make && ./cpp_http_server"
