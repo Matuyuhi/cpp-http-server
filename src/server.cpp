@@ -10,7 +10,7 @@
 #include "routes/include/path2.h"
 #include "routes/include/default.h"
 #include "config/config.h"
-#include "aliases/http_aliases.h"
+#include "core/ThreadPool.h"
 
 namespace beast = boost::beast;
 namespace http = beast::http;
@@ -36,15 +36,20 @@ Handler *find_handler(const std::string &target) {
     return defaultHandler;
 }
 
-void getTimeStamp() {
+void getTimeStamp(const HTTPRequest& req, const HTTPResponse& res) {
     auto now = std::chrono::system_clock::now();
     std::time_t end_time = std::chrono::system_clock::to_time_t(now);
+    std::string str_time = std::ctime(&end_time);
+    // trim trailing new line character
+    str_time.erase(std::remove(str_time.begin(), str_time.end(), '\n'), str_time.end());
 
-    std::cout << "Current Time and Date: " << std::ctime(&end_time) << std::endl;
+    std::cout << "[" << str_time << "]"
+    << "Request: " << req.method_string() << " " <<  std::string(req.target()) << " "
+    << "Response:" << res.result_int() << std::endl;　
 }
 
 void process_request(tcp::socket &socket) {
-    getTimeStamp();
+
     beast::flat_buffer buffer;
 
     HTTPRequest req;
@@ -56,7 +61,7 @@ void process_request(tcp::socket &socket) {
         return;
     }
     std::string target = std::string(req.target());
-    std::cout << "request\n" << req << std::endl;
+
     HTTPResponse res;
 
     auto handler = find_handler(target);
@@ -66,7 +71,8 @@ void process_request(tcp::socket &socket) {
     } else {
         res.result(http::status::not_found);
     }
-    std::cout << "response\n" << res << std::endl;
+    getTimeStamp(req, res);
+
     http::write(socket, res);
 }
 
@@ -75,10 +81,13 @@ int main() {
 
     boost::asio::io_context ioc;
     tcp::acceptor acceptor(ioc, {tcp::v4(), SERVER_PORT});
-
+    ThreadPool pool(std::thread::hardware_concurrency());
+    std::cout << "Server is now running and ready "<< SERVER_PORT << "to accept connections..." << std::endl;
     for (;;) {
         tcp::socket socket(ioc);
         acceptor.accept(socket);
-        process_request(socket);
+        pool.enqueue([socket = std::move(socket)]() mutable {
+            process_request(socket);
+        });
     }
 }

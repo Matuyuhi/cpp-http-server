@@ -20,6 +20,7 @@ file(GLOB SERVER_HEADERS
         ${PROJECT_SOURCE_DIR}/src/routes/include/*.h
         ${PROJECT_SOURCE_DIR}/src/config/*.h
         ${PROJECT_SOURCE_DIR}/src/aliases/*.h
+        ${PROJECT_SOURCE_DIR}/src/core/*.h
 )
 
 add_executable(cpp_http_server ${SERVER_SOURCES} ${SERVER_HEADERS})
