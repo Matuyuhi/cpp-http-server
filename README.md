@@ -1,3 +1,3 @@
 # cpp-http-server
 
-c++でhttpサーバー
+Boostを使ったc++のhttpサーバー
