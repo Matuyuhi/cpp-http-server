@@ -45,7 +45,7 @@ void getTimeStamp(const HTTPRequest& req, const HTTPResponse& res) {
 
     std::cout << "[" << str_time << "]"
     << "Request: " << req.method_string() << " " <<  std::string(req.target()) << " "
-    << "Response:" << res.result_int() << std::endl;　
+    << "Response:" << res.result_int() << std::endl;
 }
 
 void process_request(tcp::socket &socket) {
@@ -80,9 +80,10 @@ int main() {
     initialize_handlers();
 
     boost::asio::io_context ioc;
-    tcp::acceptor acceptor(ioc, {tcp::v4(), SERVER_PORT});
+    unsigned short port = Config::SERVER_PORT;
+    tcp::acceptor acceptor(ioc, {tcp::v4(), port});
     ThreadPool pool(std::thread::hardware_concurrency());
-    std::cout << "Server is now running and ready "<< SERVER_PORT << "to accept connections..." << std::endl;
+    std::cout << "Server is now running and ready "<< port << " to accept connections..." << std::endl;
     for (;;) {
         tcp::socket socket(ioc);
         acceptor.accept(socket);

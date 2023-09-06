@@ -6,6 +6,10 @@ set(CMAKE_CXX_STANDARD 20)
 # Boostライブラリが存在するパスをCMakeに知らせる
 list(APPEND CMAKE_PREFIX_PATH "/opt/homebrew/lib/cmake")
 
+# MySQLのライブラリとインクルードディレクトリの場所を追加
+link_directories(/opt/homebrew/lib/)
+include_directories(/opt/homebrew/include/)
+
 # Boostライブラリを見つける
 find_package(Boost 1.74.0 COMPONENTS system thread REQUIRED)
 
@@ -13,6 +17,8 @@ find_package(Boost 1.74.0 COMPONENTS system thread REQUIRED)
 file(GLOB SERVER_SOURCES
         ${PROJECT_SOURCE_DIR}/src/server.cpp
         ${PROJECT_SOURCE_DIR}/src/routes/src/*.cpp
+        ${PROJECT_SOURCE_DIR}/src/core/*.cpp
+        ${PROJECT_SOURCE_DIR}/src/config/*.cpp
 )
 
 # header
@@ -29,4 +35,5 @@ add_executable(version_check version_check.cpp)
 
 # Boostライブラリをリンク
 target_link_libraries(cpp_http_server Boost::system Boost::thread)
+target_link_libraries(cpp_http_server mysqlclient)
 target_link_libraries(version_check Boost::system Boost::thread)

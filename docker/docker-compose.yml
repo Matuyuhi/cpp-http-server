@@ -6,11 +6,47 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - '8080:8080'
+      - '${APP_PORT}:${APP_PORT}'
     expose:
-      - 8080
+      - ${APP_PORT}
     tty: true
+    environment:
+      - MYSQL_USERNAME=${USERNAME}
+      - MYSQL_PASSWORD=${USERPASS}
+      - MYSQL_DATABASE=${DATABASE}
+      - APP_PORT=${APP_PORT}
+      - MYSQL_HOST=cpp_db
+      - MYSQL_PORT=${MYSQL_PORT}
     volumes:
       - ..:/usr/src/myapp
     working_dir: /usr/src/myapp
     command: bash -c "rm -rf build && mkdir -p build && cd build && cmake .. && make && ./cpp_http_server"
+
+  cpp_db:
+    image: mysql:8.0.32-debian
+    platform: linux/amd64
+    container_name: db
+
+    command: mysqld --innodb_use_native_aio=0
+
+    environment:
+      - MYSQL_ROOT_HOST=%
+      - MYSQL_ROOT_PASSWORD=${ROOTPASS}
+      - MYSQL_USER=${USERNAME}
+      - MYSQL_PASSWORD=${USERPASS}
+      - MYSQL_DATABASE=${DATABASE}
+      - TZ=Asia/Tokyo
+      - MYSQL_TCP_PORT=${MYSQL_PORT}
+
+    ports:
+      - '${MYSQL_PORT}:3306'
+    expose:
+      - ${MYSQL_PORT}
+
+    volumes:
+      - ./db/init.d:/docker-entrypoint-initdb.d
+      - ./db/conf/my.conf:/etc/mysql/conf.d/my.conf:ro
+      - ./db/logs:/var/log/mysql
+      # data
+      - ./db/data:/var/lib/mysql
+
